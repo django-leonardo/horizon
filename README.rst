@@ -1,6 +1,21 @@
-=============================
-Horizon (OpenStack Dashboard)
-=============================
+=================
+OpenStack Horizon
+=================
+
+This is not my code ! Why i created this package ? Because we need only Horizon without Openstack Dashboard dependencies !
+
+Installing from git about 10min and 50Mb is past
+
+**Now we have 527Kb on pypi ready to use anywhere !**
+
+Plan for this repository is only follow main openstack project and propagate stable version of Horizon for us.
+
+Now is there **stable/kilo** and development version from master, but we recommend using ``stable/kilo``
+
+.. code-block::
+
+    pip install leonardo-horizon
+
 
 Horizon is a Django-based project aimed at providing a complete OpenStack
 Dashboard along with an extensible framework for building new dashboards
