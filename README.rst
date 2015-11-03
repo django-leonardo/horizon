@@ -2,6 +2,16 @@
 Horizon (OpenStack Dashboard)
 =============================
 
+Horizon without Openstack Dashboard dependencies !
+
+* stable/juno - 2014.3.0
+* stable/kilo - 2015.3.0
+* stable/liberty - 2015.10.0
+
+.. code-block::
+
+    pip install leonardo-horizon
+
 Horizon is a Django-based project aimed at providing a complete OpenStack
 Dashboard along with an extensible framework for building new dashboards
 from reusable components. The ``openstack_dashboard`` module is a reference
