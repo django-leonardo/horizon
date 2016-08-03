@@ -294,8 +294,8 @@ class Step(object):
         self.workflow = workflow
 
         cls = self.__class__.__name__
-        if not (self.action_class and issubclass(self.action_class, Action)):
-            raise AttributeError("action_class not specified for %s." % cls)
+        # if not (self.action_class and issubclass(self.action_class, Action)):
+        #     raise AttributeError("action_class not specified for %s." % cls)
 
         self.slug = self.action_class.slug
         self.name = self.action_class.name
