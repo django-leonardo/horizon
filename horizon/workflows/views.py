@@ -29,6 +29,7 @@ from horizon import messages
 
 
 class WorkflowView(hz_views.ModalBackdropMixin, generic.TemplateView):
+
     """A generic class-based view which handles the intricacies of workflow
     processing with minimal user configuration.
 
@@ -72,13 +73,17 @@ class WorkflowView(hz_views.ModalBackdropMixin, generic.TemplateView):
         """
         return copy.copy(self.request.GET)
 
+    def get_workflow_class(self):
+        """Returns the workflow class"""
+        return self.workflow_class
+
     def get_workflow(self):
         """Returns the instantiated workflow class."""
         extra_context = self.get_initial()
         entry_point = self.request.GET.get("step", None)
-        workflow = self.workflow_class(self.request,
-                                       context_seed=extra_context,
-                                       entry_point=entry_point)
+        workflow = self.get_workflow_class()(self.request,
+                                             context_seed=extra_context,
+                                             entry_point=entry_point)
         return workflow
 
     def get_context_data(self, **kwargs):
@@ -151,6 +156,7 @@ class WorkflowView(hz_views.ModalBackdropMixin, generic.TemplateView):
         Returns a dict describing the validation state of the workflow.
         """
         errors = {}
+
         for step in workflow.steps[start:end + 1]:
             if not step.action.is_valid():
                 errors[step.slug] = dict(
@@ -161,6 +167,29 @@ class WorkflowView(hz_views.ModalBackdropMixin, generic.TemplateView):
             'workflow_slug': workflow.slug,
             'errors': errors,
         }
+
+    def render_next_steps(self, request, workflow, start, end):
+        """render next steps
+
+        this allows change form content on the fly
+
+        """
+        rendered = {}
+
+        request = copy.copy(self.request)
+        # patch request method, because we want render new form without
+        # validation
+        request.method = "GET"
+
+        new_workflow = self.get_workflow_class()(
+            request,
+            context_seed=workflow.context,
+            entry_point=workflow.entry_point)
+
+        for step in new_workflow.steps[end:]:
+            rendered[step.get_id()] = step.render()
+
+        return rendered
 
     def post(self, request, *args, **kwargs):
         """Handler for HTTP POST requests."""
@@ -184,8 +213,16 @@ class WorkflowView(hz_views.ModalBackdropMixin, generic.TemplateView):
             data = self.validate_steps(request, workflow,
                                        validate_step_start,
                                        validate_step_end)
+
+            next_steps = self.render_next_steps(request, workflow,
+                                                validate_step_start,
+                                                validate_step_end)
+            # append rendered next steps
+            data["rendered"] = next_steps
+
             return http.HttpResponse(json.dumps(data),
                                      content_type="application/json")
+
         if not workflow.is_valid():
             return self.render_to_response(context)
         try:
