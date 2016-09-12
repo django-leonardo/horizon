@@ -655,7 +655,7 @@ class BatchAction(Action):
        the horizon user.
     """
 
-    help_text = _("This action cannot be undone.")
+    help_text = _("Please confirm your selection. This action cannot be undone.")
 
     def __init__(self, **kwargs):
         super(BatchAction, self).__init__(**kwargs)
