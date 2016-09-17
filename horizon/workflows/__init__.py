@@ -18,3 +18,5 @@ from horizon.workflows.base import Step  # noqa
 from horizon.workflows.base import UpdateMembersStep  # noqa
 from horizon.workflows.base import Workflow  # noqa
 from horizon.workflows.views import WorkflowView  # noqa
+from horizon.workflows.models import ModelAction  # noqa
+from horizon.workflows.models import ModelStep  # noqa

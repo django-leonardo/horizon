@@ -7,7 +7,8 @@ from django.template.defaultfilters import slugify
 from django.utils.encoding import force_text
 from django.utils.translation import ugettext_lazy as _
 from django.views.decorators.debug import sensitive_variables  # noqa
-from horizon import workflows
+
+from .base import Step
 
 
 class ModelFormOptions(forms.models.ModelFormOptions):
@@ -136,8 +137,10 @@ class ModelAction(six.with_metaclass(ActionMetaclass,
 
         self.save()
 
+        return True
 
-class ModelStep(workflows.Step):
+
+class ModelStep(Step):
 
     """Base Step for models
 
