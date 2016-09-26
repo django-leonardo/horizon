@@ -104,7 +104,6 @@ msgid "Filter"
 msgstr "Filtr"
 
 #: tables/actions.py:658
-#| msgid "This action cannot be undone."
 msgid "Please confirm your selection. This action cannot be undone."
 msgstr "Prosím potvrďte váš výběr. Toto nelze vrátit."
 
